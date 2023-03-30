@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-for weapon_type import WeaponType
+from weapon_type import WeaponType
 
 """
 This Python module contains not only the class Pokemon, but also the test of
@@ -70,16 +70,16 @@ class Pokemon():
       >>> obj_Pokemon = Pokemon(1, "Bulbasaur", WeaponType.PUNCH, 100, 7, 10)
     """
     
-    def __init__(self, id, pokemon_name, weapon_type, hp, attack, defence):
+    known_pokemon_ids = [] 
+    
+    def __init__(self, id, pokemon_name, weapon_type, hp, attack, defence, known_pokemon_ids = known_pokemon_ids):
         
         #Forma de comprobar que el id no se repite o el pokemon no se repite
-        known_pokemon_ids = []
+        
         if id in known_pokemon_ids:
-            print("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
-        else:
-            known_pokemon_ids.append(id)
-        
-        
+            raise ValueError("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
+    
+        Pokemon.known_pokemon_ids.append(id)
         self.__id = id
         #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
         self._pokemon_name = pokemon_name
@@ -94,12 +94,48 @@ class Pokemon():
         #Protegida ya que si el jugador cambia la defensa del pokemon puede crear un pokemon que no pueda defenderse o que tenga una defensa infinita, pero no rompe el programa
         
     def __del__(self):
-        pass    
-
+        Pokemon.known_pokemon_ids.remove(self.__id)
     
-
-
-
+    def is_alive(self):
+        
+        if self._hp > 0:
+            return True
+        else:
+            hp = 0
+            return False
+        
+    def get_id(self):
+        return self.__id 
+    def get_pokemon_name(self):
+        return self._pokemon_name
+    def get_weapon_type(self):
+        return self._weapon_type
+    def get_hp(self):
+        return self._hp
+    def get_attack(self):
+        return self._attack   
+    def get_defence(self):
+        return self._defence
+    
+    def fight_attack(self, pokemon_to_attack):
+        total_damage =  self._attack - pokemon_to_attack.get_defence()
+        pokemon_to_attack.fight_defense(total_damage)
+        if pokemon_to_attack.is_alive() == True:
+            return True
+        else:
+            return False
+        
+    def fight_defense(self, total_damage):
+        self._hp -= total_damage    
+        if total_damage == 0:
+            return False
+        else:
+            return True
+        
+        
+        
+        
+        
 def main():
     """Function main of the module.
 
@@ -138,17 +174,17 @@ def main():
     else:
         print("Test FAIL. Check the method __init__().")
 
-    if pokemon_1.get_health_points() == 100:
+    if pokemon_1.get_hp() == 100:
         print("Test PASS. The parameter health_points has been correctly set.")
     else:
         print("Test FAIL. Check the method __init__().")
 
-    if pokemon_1.get_attack_rating() == 8:
+    if pokemon_1.get_attack() == 8:
         print("Test PASS. The parameter attack_rating has been correctly set.")
     else:
         print("Test FAIL. Check the method __init__().")
 
-    if pokemon_1.get_defense_rating() == 9:
+    if pokemon_1.get_defence() == 9:
         print("Test PASS. The parameter defense_rating has been correctly set.")
     else:
         print("Test FAIL. Check the method __init__().")
@@ -170,6 +206,7 @@ def main():
     print("=================================================================.")
     pokemon_3 = Pokemon(3, "Wartortle", WeaponType.KICK, 97, 8, 9)
 
+    
     if pokemon_3.is_alive():
         pokemon_3.fight_defense(200)  # With this the Pokemon should be retired.
 
@@ -188,7 +225,7 @@ def main():
 
     pokemon_4.fight_defense(70)
 
-    if pokemon_4.get_health_points() == 29:
+    if pokemon_4.get_hp() == 29:
         print("Test PASS. The method fight_defense() has been implemented correctly.")
     else:
         print("Test FAIL. Check the method fight_defense().")
@@ -203,12 +240,12 @@ def main():
     pokemon_was_hit = pokemon_5.fight_attack(pokemon_6)
 
     if pokemon_was_hit:
-        if pokemon_6.get_health_points() == 97:
+        if pokemon_6.get_hp() == 97:
             print("Test PASS. The method fight_attack() has been implemented correctly.")
         else:
             print("Test FAIL. Check the method fight_attack().")
     else:
-        if pokemon_6.get_health_points() == 99:
+        if pokemon_6.get_hp() == 99:
             print("Test PASS. The method fight_attack() has been implemented correctly.")
         else:
             print("Test FAIL. Check the method fight_attack().")
