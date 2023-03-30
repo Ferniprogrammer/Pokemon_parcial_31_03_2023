@@ -36,7 +36,7 @@ this Python class.
 
 
 
-class PokemonWater():
+class PokemonWater(Pokemon):
     """Python class to implement a basic version of a Pokemon of the game.
 
     This Python class implements the basic version of a Pokemon of the game.
@@ -80,7 +80,7 @@ class PokemonWater():
             raise ValueError("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
         Pokemon.known_pokemon_ids.append(id)
         
-        self.__id = id
+        self._id = id
         #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
         self._pokemon_name = pokemon_name
         #Protegida ya que si cambian el nombre no afecta al programa, pero es un identificador más intuitivo que la id para el jugador
@@ -98,7 +98,7 @@ class PokemonWater():
             raise ValueError("The defense rating of a pokemon must be between 1 and 10.")
         self._defence = defence
         #Protegida ya que si el jugador cambia la defensa del pokemon puede crear un pokemon que no pueda defenderse o que tenga una defensa infinita, pero no rompe el programa
-        
+    
 
 def main():
     """Function main of the module.

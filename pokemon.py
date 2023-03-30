@@ -80,8 +80,8 @@ class Pokemon():
             raise ValueError("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
         Pokemon.known_pokemon_ids.append(id)
         
-        self.__id = id
-        #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
+        self._id = id
+        #Protegida ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico, pero las subclases deben poder acceder a él
         self._pokemon_name = pokemon_name
         #Protegida ya que si cambian el nombre no afecta al programa, pero es un identificador más intuitivo que la id para el jugador
         self._weapon_type = weapon_type
@@ -100,10 +100,10 @@ class Pokemon():
         #Protegida ya que si el jugador cambia la defensa del pokemon puede crear un pokemon que no pueda defenderse o que tenga una defensa infinita, pero no rompe el programa
         
     def __del__(self):
-        Pokemon.known_pokemon_ids.remove(self.__id)
+        Pokemon.known_pokemon_ids.remove(self._id)
            
     def __str__(self):
-        return "Pokemon ID {:d} with name {:s} has as weapon {:s} and health {:d}".format(self.__id, self._pokemon_name, self._weapon_type.name, self._hp)
+        return "Pokemon ID {:d} with name {:s} has as weapon {:s} and health {:d}".format(self._id, self._pokemon_name, self._weapon_type.name, self._hp)
     
     def is_alive(self):
         
@@ -113,7 +113,7 @@ class Pokemon():
             hp = 0
             return False
     def get_id(self):
-        return self.__id 
+        return self._id 
     def get_pokemon_name(self):
         return self._pokemon_name
     def get_weapon_type(self):
