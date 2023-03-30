@@ -72,29 +72,38 @@ class Pokemon():
     
     known_pokemon_ids = [] 
     
-    def __init__(self, id, pokemon_name, weapon_type, hp, attack, defence, known_pokemon_ids = known_pokemon_ids):
+    def __init__(self, id, pokemon_name, weapon_type, hp, attack, defence):
         
         #Forma de comprobar que el id no se repite o el pokemon no se repite
         
-        if id in known_pokemon_ids:
+        if id in Pokemon.known_pokemon_ids:
             raise ValueError("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
-    
         Pokemon.known_pokemon_ids.append(id)
+        
         self.__id = id
         #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
         self._pokemon_name = pokemon_name
         #Protegida ya que si cambian el nombre no afecta al programa, pero es un identificador más intuitivo que la id para el jugador
         self._weapon_type = weapon_type
         #Protegida ya que el cambiar el nombre del arma no afecta al programa, pero si que puede confundir al jugador
+        if hp > 100 or hp < 1:
+            raise ValueError("The health points of a pokemon must be between 1 and 100.")
         self._hp = hp
         #Protegida ya que si el jugador cambia la vida del pokemon puede crear un pokemon inmortal o uno que tenga vida negativa, pero no rompe el programa
+        if attack > 10 or attack < 1:
+            raise ValueError("The attack rating of a pokemon must be between 1 and 10.")
         self._attack = attack
         #Protegida ya que si el jugador cambia el ataque del pokemon puede crear un pokemon que no pueda atacar o que tenga un ataque infinito, pero no rompe el programa
+        if defence > 10 or defence < 1:
+            raise ValueError("The defense rating of a pokemon must be between 1 and 10.")
         self._defence = defence
         #Protegida ya que si el jugador cambia la defensa del pokemon puede crear un pokemon que no pueda defenderse o que tenga una defensa infinita, pero no rompe el programa
         
     def __del__(self):
         Pokemon.known_pokemon_ids.remove(self.__id)
+           
+    def __str__(self):
+        return "Pokemon ID {:d} with name {:s} has as weapon {:s} and health {:d}".format(self.__id, self._pokemon_name, self._weapon_type.name, self._hp)
     
     def is_alive(self):
         
@@ -103,34 +112,31 @@ class Pokemon():
         else:
             hp = 0
             return False
-        
     def get_id(self):
         return self.__id 
     def get_pokemon_name(self):
         return self._pokemon_name
     def get_weapon_type(self):
         return self._weapon_type
-    def get_hp(self):
+    def get_health_points(self):
         return self._hp
-    def get_attack(self):
+    def get_attack_rating(self):
         return self._attack   
-    def get_defence(self):
+    def get_defense_rating(self):
         return self._defence
     
     def fight_attack(self, pokemon_to_attack):
-        total_damage =  self._attack - pokemon_to_attack.get_defence()
-        pokemon_to_attack.fight_defense(total_damage)
-        if pokemon_to_attack.is_alive() == True:
-            return True
-        else:
-            return False
+        total_damage =  self._attack
+        hit = pokemon_to_attack.fight_defense(total_damage)
+        return hit
         
     def fight_defense(self, total_damage):
-        self._hp -= total_damage    
-        if total_damage == 0:
-            return False
-        else:
+   
+        if total_damage > self._defence:
+            self._hp = self._hp - (total_damage - self._defence)    
             return True
+        else:
+            return False
         
         
         
@@ -174,17 +180,17 @@ def main():
     else:
         print("Test FAIL. Check the method __init__().")
 
-    if pokemon_1.get_hp() == 100:
+    if pokemon_1.get_health_points() == 100:
         print("Test PASS. The parameter health_points has been correctly set.")
     else:
         print("Test FAIL. Check the method __init__().")
 
-    if pokemon_1.get_attack() == 8:
+    if pokemon_1.get_attack_rating() == 8:
         print("Test PASS. The parameter attack_rating has been correctly set.")
     else:
         print("Test FAIL. Check the method __init__().")
 
-    if pokemon_1.get_defence() == 9:
+    if pokemon_1.get_defense_rating() == 9:
         print("Test PASS. The parameter defense_rating has been correctly set.")
     else:
         print("Test FAIL. Check the method __init__().")
@@ -225,7 +231,7 @@ def main():
 
     pokemon_4.fight_defense(70)
 
-    if pokemon_4.get_hp() == 29:
+    if pokemon_4.get_health_points() == 29:
         print("Test PASS. The method fight_defense() has been implemented correctly.")
     else:
         print("Test FAIL. Check the method fight_defense().")
@@ -240,12 +246,12 @@ def main():
     pokemon_was_hit = pokemon_5.fight_attack(pokemon_6)
 
     if pokemon_was_hit:
-        if pokemon_6.get_hp() == 97:
+        if pokemon_6.get_health_points() == 97:
             print("Test PASS. The method fight_attack() has been implemented correctly.")
         else:
             print("Test FAIL. Check the method fight_attack().")
     else:
-        if pokemon_6.get_hp() == 99:
+        if pokemon_6.get_health_points() == 99:
             print("Test PASS. The method fight_attack() has been implemented correctly.")
         else:
             print("Test FAIL. Check the method fight_attack().")

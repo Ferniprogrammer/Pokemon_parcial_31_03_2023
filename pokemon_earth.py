@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from pokemon import Pokemon
+from weapon_type import WeaponType
 
 """
 This Python module contains not only the class Pokemon, but also the test of
@@ -35,7 +37,7 @@ this Python class.
 
 
 
-class PokemonEarth():
+class PokemonEarth(Pokemon):
     """Python class to implement a basic version of a Pokemon of the game.
 
     This Python class implements the basic version of a Pokemon of the game.
@@ -68,6 +70,33 @@ class PokemonEarth():
       >>> from weapon_type import WeaponType
       >>> obj_Pokemon = PokemonEarth(1, "Diglett", WeaponType.PUNCH, 100, 7, 10)
     """
+    def __init__(self, id, pokemon_name, weapon_type, hp, attack, defence):
+        
+        #Forma de comprobar que el id no se repite o el pokemon no se repite
+        
+        if id in Pokemon.known_pokemon_ids:
+            raise ValueError("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
+        Pokemon.known_pokemon_ids.append(id)
+        
+        self.__id = id
+        #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
+        self._pokemon_name = pokemon_name
+        #Protegida ya que si cambian el nombre no afecta al programa, pero es un identificador más intuitivo que la id para el jugador
+        self._weapon_type = weapon_type
+        #Protegida ya que el cambiar el nombre del arma no afecta al programa, pero si que puede confundir al jugador
+        if hp > 100 or hp < 1:
+            raise ValueError("The health points of a pokemon must be between 1 and 100.")
+        self._hp = hp
+        #Protegida ya que si el jugador cambia la vida del pokemon puede crear un pokemon inmortal o uno que tenga vida negativa, pero no rompe el programa
+        if attack > 10 or attack < 1:
+            raise ValueError("The attack rating of a pokemon must be between 1 and 10.")
+        self._attack = attack
+        #Protegida ya que si el jugador cambia el ataque del pokemon puede crear un pokemon que no pueda atacar o que tenga un ataque infinito, pero no rompe el programa
+        if defence > 20 or defence < 11:
+            raise ValueError("The defense rating of a pokemon must be between 11 and 20.")
+        self._defence = defence
+        #Protegida ya que si el jugador cambia la defensa del pokemon puede crear un pokemon que no pueda defenderse o que tenga una defensa infinita, pero no rompe el programa
+        
 
 
 def main():
