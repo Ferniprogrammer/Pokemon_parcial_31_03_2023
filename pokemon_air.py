@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from pokemon import Pokemon
+from weapon_type import WeaponType
 
 """
 This Python module contains not only the class Pokemon, but also the test of
@@ -66,8 +68,21 @@ class PokemonAir(Pokemon):
     -------
       >>> from pokemon import Pokemon
       >>> from weapon_type import WeaponType
-      >>> obj_Pokemon = PokemonEarth(1, "Pidgey", WeaponType.PUNCH, 100, 7, 10)
-    """
+      >>> obj_Pokemon = PokemonEarth(1, "Pidgey", WeaponType.PUNCH, 100, 7, 10)    """
+      
+    def fight_attack(self, pokemon_to_attack):
+    total_damage =  self._attack
+    hit = pokemon_to_attack.fight_defense(total_damage)
+    return hit
+    
+    def fight_defense(self, total_damage):
+
+        if total_damage > self._defence:
+            self._hp = self._hp - (total_damage - self._defence)    
+            return True
+        else:
+            return False
+        
 
 
 def main():

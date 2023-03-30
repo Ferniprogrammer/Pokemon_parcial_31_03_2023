@@ -78,7 +78,7 @@ class PokemonEarth(Pokemon):
             raise ValueError("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
         Pokemon.known_pokemon_ids.append(id)
         
-        self.__id = id
+        self._id = id
         #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
         self._pokemon_name = pokemon_name
         #Protegida ya que si cambian el nombre no afecta al programa, pero es un identificador más intuitivo que la id para el jugador
