@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+for weapon_type import WeaponType
 
 """
 This Python module contains not only the class Pokemon, but also the test of
@@ -68,8 +69,34 @@ class Pokemon():
       >>> from weapon_type import WeaponType
       >>> obj_Pokemon = Pokemon(1, "Bulbasaur", WeaponType.PUNCH, 100, 7, 10)
     """
+    
+    def __init__(self, id, pokemon_name, weapon_type, hp, attack, defence):
+        
+        #Forma de comprobar que el id no se repite o el pokemon no se repite
+        known_pokemon_ids = []
+        if id in known_pokemon_ids:
+            print("This pokemon id is already in use. Please, choose another one or check that the pokemon does not already exist.")
+        else:
+            known_pokemon_ids.append(id)
+        
+        
+        self.__id = id
+        #Privada ya que si tocan la id puede haber un fallo en todo el programa al eliminar una id en especifico
+        self._pokemon_name = pokemon_name
+        #Protegida ya que si cambian el nombre no afecta al programa, pero es un identificador más intuitivo que la id para el jugador
+        self._weapon_type = weapon_type
+        #Protegida ya que el cambiar el nombre del arma no afecta al programa, pero si que puede confundir al jugador
+        self._hp = hp
+        #Protegida ya que si el jugador cambia la vida del pokemon puede crear un pokemon inmortal o uno que tenga vida negativa, pero no rompe el programa
+        self._attack = attack
+        #Protegida ya que si el jugador cambia el ataque del pokemon puede crear un pokemon que no pueda atacar o que tenga un ataque infinito, pero no rompe el programa
+        self._defence = defence
+        #Protegida ya que si el jugador cambia la defensa del pokemon puede crear un pokemon que no pueda defenderse o que tenga una defensa infinita, pero no rompe el programa
+        
+    def __del__(self):
+        pass    
 
-
+    
 
 
 

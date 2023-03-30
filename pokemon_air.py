@@ -35,7 +35,7 @@ this Python class.
 
 
 
-class PokemonAir():
+class PokemonAir(Pokemon):
     """Python class to implement a basic version of a Pokemon of the game.
 
     This Python class implements the basic version of a Pokemon of the game.
