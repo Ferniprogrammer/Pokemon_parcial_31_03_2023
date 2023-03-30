@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import random as rnd
 from pokemon import Pokemon
 from weapon_type import WeaponType
 
@@ -37,7 +37,7 @@ this Python class.
 
 
 
-class PokemonElectricity():
+class PokemonElectricity(Pokemon):
     """Python class to implement a basic version of a Pokemon of the game.
 
     This Python class implements the basic version of a Pokemon of the game.
@@ -70,7 +70,14 @@ class PokemonElectricity():
       >>> from weapon_type import WeaponType
       >>> obj_Pokemon = PokemonEarth(1, "Pikachu", WeaponType.PUNCH, 100, 7, 10)
     """
-
+    def fight_attack(self, pokemon_to_attack):
+        total_damage =  self._attack
+        crit_chance = rnd.random()
+        if crit_chance > 0.5:
+            total_damage = total_damage * 2
+        hit = pokemon_to_attack.fight_defense(total_damage)
+        return hit
+    
 
 
 def main():
